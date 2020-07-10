@@ -18,7 +18,7 @@ function coinflip(){
 function percentageCal(){
 for key in ${!coinCombination[@]}
 do
-                combination_percent[$key]=`echo "scale=2; $((${coinCombination[$key]}))/$num*100" | bc`
+                combination_percent[$key]=`echo "scale=2; ($((${coinCombination[$key]}))*100)/$num" | bc`
 done
 }
 
