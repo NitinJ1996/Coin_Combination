@@ -14,8 +14,8 @@ function coinflip(){
         esac
 }
 
+#function to calculate combination percentage
 function percentageCal(){
-
 for key in ${!coinCombination[@]}
 do
                 combination_percent[$key]=`echo "scale=2; $((${coinCombination[$key]}))/$num*100" | bc`
@@ -27,10 +27,6 @@ read -p "Enter the no.of time to flip a coin: " num
 #variables
 h=0
 t=0
-hh=0
-ht=0
-th=0
-tt=0
 
 #creating dictionary for singlet
 for ((i=0; i<$num; i++))
