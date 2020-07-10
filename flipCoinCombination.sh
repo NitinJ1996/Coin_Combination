@@ -1,12 +1,12 @@
-#!/bin/bash -x
+#!/bin/bash 
 
 #dictionaries
 declare -A coinCombination
 declare -A combination_percent
 
-
 #function to generate toss
-function coinflip(){
+function coinflip()
+{
         toss=$((RANDOM%2))
         case $toss in
                 1) echo "H" ;;
@@ -14,18 +14,41 @@ function coinflip(){
         esac
 }
 
-
 #function to calculate combination percentage
-function percentageCal(){
+function percentageCal()
+{
 for key in ${!coinCombination[@]}
 do
-                combination_percent[$key]=`echo "scale=2; ($((${coinCombination[$key]}))*100)/$num" | bc`
+        combination_percent[$key]=`echo "scale=2; ($((${coinCombination[$key]}))*100)/$num" | bc`
 done
 }
 
+#sorting the dictionary
+function sorting()
+{
+for key in "${!combination_percent[@]}"; do
+	  printf '%s:%s\n' "$key" "${combination_percent[$key]}"
+done | sort -t : -k 2n
+}
+
+#function for max percentage
+function max_percentage()
+{
+max=0
+for key in ${!combination_percent[@]}
+do
+	if (( $(echo "${combination_percent[$key]}>=$max"| bc) ))
+	then
+		max=${combination_percent[$key]}
+		max_key=$key
+	fi
+done
+}
+
+#geting input from user
 read -p "Enter the no.of time to flip a coin: " num
 
-#variables
+#assigning variables
 h=0;t=0;hh=0;ht=0;th=0;tt=0;
 hhh=0;hht=0;hth=0;thh=0;tth=0;tht=0;
 htt=0;ttt=0
@@ -45,8 +68,7 @@ done
 for((i=0; i<$num; i++))
 do
 	flip=$( coinflip )$( coinflip )
-   echo $flip
-   case $flip in
+    case $flip in
       HH) coinCombination[$flip]=$(( ++hh )) ;;
       TT) coinCombination[$flip]=$(( ++tt )) ;;
       HT) coinCombination[$flip]=$(( ++ht )) ;;
@@ -55,7 +77,7 @@ do
    esac
 done
 
-#creating dictionary for triplet
+#extending dictionary for triplet
 for((i=0; i<$num; i++))
 do
    flip=$( coinflip )$( coinflip )$( coinflip )
@@ -72,8 +94,10 @@ do
 	esac
 done
 
-percentageCal
+percentageCal #percentage function call
 
-echo "Coin Combination: " ${!coinCombination[@]}
-echo "Combination Count: " ${coinCombination[@]}
-echo "Combination Percentage: "${combination_percent[@]}
+sorting #sorting function call
+
+max_percentage #Max value function call
+
+echo "Maximum percentage is obtained by combination $max_key - $max percent"
