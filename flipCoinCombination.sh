@@ -14,6 +14,7 @@ function coinflip(){
         esac
 }
 
+
 #function to calculate combination percentage
 function percentageCal(){
 for key in ${!coinCombination[@]}
@@ -25,22 +26,36 @@ done
 read -p "Enter the no.of time to flip a coin: " num
 
 #variables
-h=0
-t=0
+h=0;t=0;hh=0;ht=0;th=0;tt=0
 
 #creating dictionary for singlet
 for ((i=0; i<$num; i++))
 do
-	cointoss=$( coinflip )
-	case $cointoss in
-		$cointoss) coinCombination[$cointoss]=$((++h)) ;;
-		$cointoss) coinCombination["T"]=$((++t)) ;;
+	flip=$( coinflip )
+	case $flip in
+		H) coinCombination[$flip]=$((++h)) ;;
+		T) coinCombination[$flip]=$((++t)) ;;
 			*) ;;
 	esac
 done
 
+#extending dictionary for doublet
+for((i=0; i<$num; i++))
+do
+	flip=$( coinflip )$( coinflip )
+   echo $flip
+   case $flip in
+      HH) coinCombination[$flip]=$(( ++hh )) ;;
+      TT) coinCombination[$flip]=$(( ++tt )) ;;
+      HT) coinCombination[$flip]=$(( ++ht )) ;;
+      TH) coinCombination[$flip]=$(( ++th )) ;;
+      *) ;;
+   esac
+done
+
+
 percentageCal
 
-echo "Signlet Combination: " ${!coinCombination[@]}
-echo "Signlet Count: " ${coinCombination[@]}
-echo "Singlet Percentage: "${combination_percent[@]}
+echo "Coin Combination: " ${!coinCombination[@]}
+echo "Combination Count: " ${coinCombination[@]}
+echo "Combination Percentage: "${combination_percent[@]}
