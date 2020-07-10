@@ -1,34 +1,50 @@
 #!/bin/bash -x
 
-#constants
-heads=1
-tails=0
+#dictionaries
+declare -A coinCombination
+declare -A combination_percent
+
+
+#function to generate toss
+function coinflip(){
+        toss=$((RANDOM%2))
+        case $toss in
+                1) echo "H" ;;
+                *) echo "T" ;;
+        esac
+}
+
+function percentageCal(){
+
+for key in ${!coinCombination[@]}
+do
+                combination_percent[$key]=`echo "scale=2; $((${coinCombination[$key]}))/$num*100" | bc`
+done
+}
 
 read -p "Enter the no.of time to flip a coin: " num
 
 #variables
-head_count=0
-tail_count=0
+h=0
+t=0
+hh=0
+ht=0
+th=0
+tt=0
 
-
-declare -A singlet
-
+#creating dictionary for singlet
 for ((i=0; i<$num; i++))
 do
-	coinflip=$((RANDOM%2))
-	case $coinflip in
-			$heads) singlet["H"]=$((++head_count)) ;;
-			$tails) singlet["T"]=$((++tail_count)) ;;
+	cointoss=$( coinflip )
+	case $cointoss in
+		$cointoss) coinCombination[$cointoss]=$((++h)) ;;
+		$cointoss) coinCombination["T"]=$((++t)) ;;
 			*) ;;
 	esac
 done
 
-declare -A singlet_percent
-for key in ${!singlet[@]}
-do
-		singlet_percent[$key]=`echo "scale=2; $((${singlet[$key]}))/$num*100" | bc`
-done
+percentageCal
 
-echo "Signlet Combination: " ${!singlet[@]}
-echo "Signlet Count: " ${singlet[@]}
-echo "Singlet Percentage: "${singlet_percent[@]}
+echo "Signlet Combination: " ${!coinCombination[@]}
+echo "Signlet Count: " ${coinCombination[@]}
+echo "Singlet Percentage: "${combination_percent[@]}
