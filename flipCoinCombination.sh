@@ -18,7 +18,7 @@ function coinflip(){
 function percentageCal(){
 for key in ${!coinCombination[@]}
 do
-                combination_percent[$key]=`echo "scale=2; $((${coinCombination[$key]}))/$num*100" | bc`
+                combination_percent[$key]=`echo "scale=2; ($((${coinCombination[$key]}))*100)/$num" | bc`
 done
 }
 
@@ -31,10 +31,10 @@ t=0
 #creating dictionary for singlet
 for ((i=0; i<$num; i++))
 do
-	cointoss=$( coinflip )
-	case $cointoss in
-		$cointoss) coinCombination[$cointoss]=$((++h)) ;;
-		$cointoss) coinCombination["T"]=$((++t)) ;;
+	flip=$( coinflip )
+	case $flip in
+		H) coinCombination[$flip]=$((++h)) ;;
+		T) coinCombination[$flip]=$((++t)) ;;
 			*) ;;
 	esac
 done
