@@ -26,7 +26,9 @@ done
 read -p "Enter the no.of time to flip a coin: " num
 
 #variables
-h=0;t=0;hh=0;ht=0;th=0;tt=0
+h=0;t=0;hh=0;ht=0;th=0;tt=0;
+hhh=0;hht=0;hth=0;thh=0;tth=0;tht=0;
+htt=0;ttt=0
 
 #creating dictionary for singlet
 for ((i=0; i<$num; i++))
@@ -53,6 +55,22 @@ do
    esac
 done
 
+#creating dictionary for triplet
+for((i=0; i<$num; i++))
+do
+   flip=$( coinflip )$( coinflip )$( coinflip )
+	case $flip in
+		HHH) coinCombination[$flip]=$(( ++hhh )) ;;
+		HHT) coinCombination[$flip]=$(( ++hht )) ;;
+		HTH) coinCombination[$flip]=$(( ++hth )) ;;
+		THH) coinCombination[$flip]=$(( ++thh )) ;;
+		TTH) coinCombination[$flip]=$(( ++tth )) ;;
+		THT) coinCombination[$flip]=$(( ++tht )) ;;
+		HTT) coinCombination[$flip]=$(( ++htt )) ;;
+		TTT) coinCombination[$flip]=$(( ++ttt )) ;;
+		*) ;;
+	esac
+done
 
 percentageCal
 
